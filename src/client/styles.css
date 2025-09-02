@@ -1,0 +1,45 @@
+:root { --bg:#000; --fg:#fff; }
+html, body { height: 100%; }
+body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, "Noto Sans";
+}
+
+#stage { position: relative; inline-size: 100%; block-size: 100vh; }
+
+#logo {
+    position: absolute;
+    z-index: 10;
+    inset-inline-start: 50%;
+    inset-block-start: 50%;
+    transform: translate(-50%, -50%);
+    transition: transform .35s ease, inline-size .35s ease, inset .35s ease;
+    inline-size: 220px;
+}
+#logo.shrink {
+    inset-inline-start: 16px;
+    inset-block-start: -80px;
+    transform: none;
+    inline-size: 120px;
+}
+
+#images {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    display: flex; gap: 12px;
+    padding: 88px 16px 16px;
+    flex-wrap: wrap; align-content: flex-start;
+    overflow: auto;
+}
+img { block-size: 256px; inline-size: auto; border-radius: 12px; }
+
+#toolbar {
+    position: fixed;
+    z-index: 20;
+    inset-inline-end: 16px;
+    inset-block-start: 16px;
+}
+button { background:#fff; color:#000; border:0; padding:8px 12px; cursor:pointer; border-radius:8px; }
+
+.hidden { display:none; }
