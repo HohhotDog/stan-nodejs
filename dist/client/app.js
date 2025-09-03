@@ -9,10 +9,10 @@ var hashing = true;
 var ws = null;
 var seen = new Set();
 function resetUI() {
-  logo.classList.remove('shrink'); // 回到居中
-  images.innerHTML = ''; // 清空所有 blob
-  images.classList.add('hidden'); // 隐藏容器
-  seen.clear(); // 清除已见 id
+  logo.classList.remove('shrink');
+  images.innerHTML = '';
+  images.classList.add('hidden');
+  seen.clear();
 }
 function connect() {
   ws = new WebSocket(WS_URL);
@@ -23,8 +23,6 @@ function connect() {
       var msg = JSON.parse(String(evt.data));
       if (seen.has(msg.id)) return;
       seen.add(msg.id);
-
-      // 强制走本地代理，避免外域 CORS
       var proxied = "/proxy?u=".concat(encodeURIComponent(msg.image));
       var res = yield fetch(proxied, {
         cache: 'force-cache'
@@ -34,22 +32,16 @@ function connect() {
         return;
       }
       var blob = yield res.blob();
-
-      // 追加图片
       var url = URL.createObjectURL(blob);
       var img = document.createElement('img');
       img.src = url;
       img.alt = String(msg.id);
       img.dataset.id = String(msg.id);
       images.appendChild(img);
-
-      // 首张图时缩 logo、显示图片容器
       if (!logo.classList.contains('shrink')) {
         logo.classList.add('shrink');
         images.classList.remove('hidden');
       }
-
-      // 回传 hash（或 null）
       var payload = {
         id: msg.id,
         hash: null
@@ -69,16 +61,14 @@ function connect() {
   }();
   ws.onclose = () => {
     console.log('Disconnected from server');
-    resetUI(); // 断线时复位
-    setTimeout(connect, 1500); // 自动重连
+    resetUI();
+    setTimeout(connect, 1500);
   };
   ws.onerror = () => {
     var _ws2;
     return (_ws2 = ws) === null || _ws2 === void 0 ? void 0 : _ws2.close();
   };
 }
-
-// Hash 按钮确保可点、立刻更新可见状态
 hashBtn.addEventListener('click', e => {
   e.preventDefault();
   e.stopPropagation();

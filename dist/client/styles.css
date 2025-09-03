@@ -17,8 +17,8 @@ body {
     inline-size: 220px;
 }
 #logo.shrink {
-    inset-inline-start: -16px;
-    inset-block-start: -60px;
+    inset-inline-start: 16px;
+    inset-block-start: -80px;
     transform: none;
     inline-size: 120px;
 }
